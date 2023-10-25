@@ -7,10 +7,24 @@ const Header = (props) => {
 const Content = (props) => {
   return (
     <div>
+    <Part part={props.osat[0].part} exercises={props.osat[0].exercises} />
+    <Part part={props.osat[1].part} exercises={props.osat[1].exercises} />
+    <Part part={props.osat[2].part} exercises={props.osat[2].exercises} />
+    </div>
+
+    /*
+    <div>
       {props.osat.map(osa => (
-        <p key={osa.part}>{osa.part} {osa.exercises}</p>
+        <Part key={osa.part} part={osa.part} exercises={osa.exercises} />
       ))}
     </div>
+    */
+  )
+}
+
+const Part = (props) => {
+  return (
+    <p>{props.part} {props.exercises}</p>
   )
 }
 
