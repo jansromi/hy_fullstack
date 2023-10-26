@@ -19,7 +19,7 @@ const Button = ({ handleClick, text }) => (
 /**
  * @param {string} text to display
  * @param {number} number to display
- * @returns div element
+ * @returns table row element
  */
 const StatisticLine = ({text, number}) => {
   return (
