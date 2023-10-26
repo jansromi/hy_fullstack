@@ -18,13 +18,13 @@ const Button = ({ handleClick, text }) => (
 
 /**
  * @param {string} text to display
- * @param {number} rating to display
+ * @param {number} number to display
  * @returns div element
  */
-const Label = ({text, rating}) => {
+const StatisticLine = ({text, number}) => {
   return (
     <div>
-      {text} {rating}
+      {text} {number}
     </div>
   )
 }
@@ -45,12 +45,12 @@ const Statistics = ({ feedback }) => {
   return (
     <div>
       <Header text='Statistics' />
-      <Label text='Good' rating={feedback.ratings.good} />
-      <Label text='Neutral' rating={feedback.ratings.neutral} />
-      <Label text='Bad' rating={feedback.ratings.bad} />
-      <Label text='All' rating={feedback.total()} />
-      <Label text='Average' rating={feedback.average()} />
-      <Label text='Positive' rating={feedback.goodPercentage()} />
+      <StatisticLine text='Good' number={feedback.ratings.good} />
+      <StatisticLine text='Neutral' number={feedback.ratings.neutral} />
+      <StatisticLine text='Bad' number={feedback.ratings.bad} />
+      <StatisticLine text='All' number={feedback.total()} />
+      <StatisticLine text='Average' number={feedback.average()} />
+      <StatisticLine text='Positive' number={feedback.goodPercentage()} />
     </div>
   )
 }
