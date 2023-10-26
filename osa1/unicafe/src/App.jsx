@@ -28,8 +28,20 @@ const Label = ({text, rating}) => {
     </div>
   )
 }
-
+/**
+ * Returns the statistics element
+ * @param {Object} feedback - The feedback object containing ratings.
+ * @returns 
+ */
 const Statistics = ({ feedback }) => {
+  if (feedback.total() === 0) {
+    return (
+      <div>
+        <Header text='Statistics' />
+        <p>No feedback given</p>
+      </div>
+    )
+  }
   return (
     <div>
       <Header text='Statistics' />
