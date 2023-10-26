@@ -23,9 +23,10 @@ const Button = ({ handleClick, text }) => (
  */
 const StatisticLine = ({text, number}) => {
   return (
-    <div>
-      {text} {number}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{number}</td>
+    </tr>
   )
 }
 /**
@@ -45,12 +46,16 @@ const Statistics = ({ feedback }) => {
   return (
     <div>
       <Header text='Statistics' />
-      <StatisticLine text='Good' number={feedback.ratings.good} />
-      <StatisticLine text='Neutral' number={feedback.ratings.neutral} />
-      <StatisticLine text='Bad' number={feedback.ratings.bad} />
-      <StatisticLine text='All' number={feedback.total()} />
-      <StatisticLine text='Average' number={feedback.average()} />
-      <StatisticLine text='Positive' number={feedback.goodPercentage()} />
+      <table>
+        <tbody>
+          <StatisticLine text='Good' number={feedback.ratings.good} />
+          <StatisticLine text='Neutral' number={feedback.ratings.neutral} />
+          <StatisticLine text='Bad' number={feedback.ratings.bad} />
+          <StatisticLine text='All' number={feedback.total()} />
+          <StatisticLine text='Average' number={feedback.average()} />
+          <StatisticLine text='Positive' number={feedback.goodPercentage()} />
+        </tbody>
+      </table>
     </div>
   )
 }
