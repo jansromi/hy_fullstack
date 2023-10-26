@@ -29,6 +29,20 @@ const Label = ({text, rating}) => {
   )
 }
 
+const Statistics = ({ feedback }) => {
+  return (
+    <div>
+      <Header text='Statistics' />
+      <Label text='Good' rating={feedback.ratings.good} />
+      <Label text='Neutral' rating={feedback.ratings.neutral} />
+      <Label text='Bad' rating={feedback.ratings.bad} />
+      <Label text='All' rating={feedback.total()} />
+      <Label text='Average' rating={feedback.average()} />
+      <Label text='Positive' rating={feedback.goodPercentage()} />
+    </div>
+  )
+}
+
 const App = () => {
   // refactor button states to an object
   const [feedback, setFeedback] = useState({
@@ -79,13 +93,7 @@ const App = () => {
       <Button handleClick={() => feedback.increment('good')} text='Good' />
       <Button handleClick={() => feedback.increment('neutral')} text='Neutral' />
       <Button handleClick={() => feedback.increment('bad')} text='Bad' />
-      <Header text='Statistics' />
-      <Label text='Good' rating={feedback.ratings.good} />
-      <Label text='Neutral' rating={feedback.ratings.neutral} />
-      <Label text='Bad' rating={feedback.ratings.bad} />
-      <Label text='All' rating={feedback.total()} />
-      <Label text='Average' rating={feedback.average()} />
-      <Label text='Positive' rating={feedback.goodPercentage()} />
+      <Statistics feedback={feedback} />
     </div>
   )
 }
