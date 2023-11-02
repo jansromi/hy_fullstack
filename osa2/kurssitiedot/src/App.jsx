@@ -58,7 +58,6 @@ const App = () => {
         exercises: 14,
         id: 3
       },
-
       {
         name: 'SQL databases',
         exercises: 17,
@@ -73,6 +72,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App
