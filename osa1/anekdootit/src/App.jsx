@@ -6,7 +6,7 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
-const Anecdote = ({ anecdote}) => (
+const Anecdote = ({ anecdote }) => (
   <div>
     {anecdote}
   </div>
@@ -17,6 +17,25 @@ const Votes = ({ votes }) => (
     has {votes} votes
   </div>
 )
+
+const Header = ({ text }) => (
+  <h1>{text}</h1>
+)
+
+const MostVotes = ({ anecdotes }) => {
+  const index = anecdotes.reduce((maxIndex, current, currentIndex, arr) => {
+    return current.votes > arr[maxIndex].votes ? currentIndex : maxIndex;
+  }, 0);
+
+  return (
+    <div>
+      <Header text="Anecdote with most votes" />
+      <Anecdote anecdote={anecdotes[index].text}/>
+      <Votes votes={anecdotes[index].votes}/>
+    </div>
+  
+  )
+}
 
 const App = () => {
 
@@ -58,22 +77,26 @@ const App = () => {
   const [selected, setSelected] = useState(0)
 
   const vote = () => {
-    const updatedAnecdotes = [...anecdotes]; // Create a new array
+    // kopioidaan taulukko
+    const updatedAnecdotes = [...anecdotes]; 
     updatedAnecdotes[selected] = {
       ...updatedAnecdotes[selected],
+      // päivitetään äänimäärä
       votes: updatedAnecdotes[selected].votes + 1,
     };
-    setAnecdotes(updatedAnecdotes); // Update state with the new array
+    setAnecdotes(updatedAnecdotes); 
   };
    
   
 
   return (
     <div>
+      <Header text="Anecdote of the day" />
       <Anecdote anecdote={anecdotes[selected].text}/>
       <Votes votes={anecdotes[selected].votes}/>
       <Button onClick={() => vote()} text="vote" />
       <Button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} text="next anecdote" />
+      <MostVotes anecdotes={anecdotes} />
     </div>
   )
 }
