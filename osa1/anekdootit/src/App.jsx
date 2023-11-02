@@ -23,6 +23,7 @@ const Header = ({ text }) => (
 )
 
 const MostVotes = ({ anecdotes }) => {
+  // return index of anecdote with most votes
   const index = anecdotes.reduce((maxIndex, current, currentIndex, arr) => {
     return current.votes > arr[maxIndex].votes ? currentIndex : maxIndex;
   }, 0);
@@ -76,19 +77,16 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
 
+  // when vote is clicked, increment and update votes
   const vote = () => {
-    // kopioidaan taulukko
     const updatedAnecdotes = [...anecdotes]; 
     updatedAnecdotes[selected] = {
       ...updatedAnecdotes[selected],
-      // päivitetään äänimäärä
       votes: updatedAnecdotes[selected].votes + 1,
     };
     setAnecdotes(updatedAnecdotes); 
   };
    
-  
-
   return (
     <div>
       <Header text="Anecdote of the day" />

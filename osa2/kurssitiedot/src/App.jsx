@@ -6,20 +6,11 @@ const Header = (props) => {
 
 const Content = (props) => {
   return (
-    
-    <div>
-    <Part part={props.osat[0].name} exercises={props.osat[0].exercises} />
-    <Part part={props.osat[1].name} exercises={props.osat[1].exercises} />
-    <Part part={props.osat[2].name} exercises={props.osat[2].exercises} />
-    </div>
-    
-    /*
     <div>
       {props.osat.map(osa => (
         <Part key={osa.name} part={osa.name} exercises={osa.exercises} />
       ))}
-    </div> */
-    
+    </div>
   )
 }
 
@@ -33,36 +24,55 @@ const Total = (props) => {
   let summa = props.osat.reduce((sum, osa) => sum + osa.exercises, 0);
 
   return (
-    <p>Number of exercises {summa}</p>
+    <b>Number of exercises {summa}</b>
+  )
+}
+
+const Course = (props) => {
+  return (
+    <div>
+      <Header coursename={props.course.name} />
+      <Content osat={props.course.parts} />
+      <Total osat={props.course.parts} />
+    </div>
   )
 }
 
 const App = () => {
   const course = {
     name: 'Half Stack application development',
+    id: 1,
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3
+      },
+
+      {
+        name: 'SQL databases',
+        exercises: 17,
+        id: 4
       }
     ]
-  };
+  }
 
   return (
     <div>
-      <Header coursename={course.name}/>
-      <Content osat={course.parts}/>
-      <Total osat={course.parts}/>
+      <Course course={course} />
     </div>
   )
 }
+
 
 export default App
