@@ -19,12 +19,21 @@ const App = () => {
   const addName = (event) => {
     // ts. älä lataa sivua uudelleen
     event.preventDefault()
+
+    // tarkistetaan onko nimi listassa
+    const exists = persons.some(person => person.name.toLocaleLowerCase() === newName.toLocaleLowerCase())
+    
+    if (exists) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     const newPerson = {
       id: persons.length + 1,
       name: newName
     }
     // lisää uusi yhteystieto
-    setPersons(persons.concat(newPerson))
+    setPersons(prevPersons => [...prevPersons, newPerson]);
     setNewName('')
   }
 
