@@ -1,58 +1,7 @@
 import { useState } from 'react'
-import Person from './components/Person'
-
-/**
- * kenttä kontaktifiltterille 
- */
-const Filter = ({ filter, setFilter }) => {
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-  }
-
-  return (
-    <div>
-      <h2>Filter</h2>
-      filter contacts:  
-      <input value={filter} onChange={handleFilterChange}>
-      </input>
-    </div>
-  )
-}
-
-/**
- * Lomake uusille kontakteille
- */
-const PhonebookForm = ({ formData, setFormData, addContact }) => {
-  // renderöi uusi nimi
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
-  }
-
-  return (
-    <form onSubmit={addContact}>
-      <div>
-        name:
-        <input
-          name="newName"
-          value={formData.newName}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        number:
-        <input
-          name="newNumber"
-          value={formData.newNumber}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
+import Filter from './components/Filter'
+import PhonebookForm from './components/PhonebookForm'
+import Contacts from './components/Contacts'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -88,8 +37,14 @@ const App = () => {
     newNumber: '',
   })
 
-  const [filter, setFilter] = useState('')
+  // phonebookform-lomakkeen tilapäivitys kun kirjoitetaan
+  const handlePhonebookFormInputChange = (event) => {
+    const { name, value } = event.target
+    setFormData((prevData) => ({ ...prevData, [name]: value }))
+  }
 
+  const [filter, setFilter] = useState('')
+  
   const addContact = (event) => {
     // ts. älä lataa sivua uudelleen
     event.preventDefault()
@@ -130,13 +85,11 @@ const App = () => {
       <PhonebookForm
         formData={formData}
         setFormData={setFormData}
+        handleInputChange={handlePhonebookFormInputChange}
         addContact={addContact}
       />
       <h2>Numbers</h2>
-      
-      {filtered.map((person) => (
-        <Person key={person.id} name={person.name} number={person.number} />
-      ))}
+      <Contacts persons={filtered}/>
     </div>
   )
 }
