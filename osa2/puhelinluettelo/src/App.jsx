@@ -1,41 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
 import PhonebookForm from './components/PhonebookForm'
 import Contacts from './components/Contacts'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      id: 1,
-      name: 'Arto Hellas',
-      number: '040-1234567',
-    },
-    {
-      id: 2,
-      name: 'Grace Hopper',
-      number: '040-9876543',
-    },
-    {
-      id: 3,
-      name: 'Ada Lovelace',
-      number: '39-44-5323523'
-    },
-    {
-      id: 4,
-      name: 'Dan Abramov',
-      number:  '12-43-234345'
-    },
-    {
-      id: 5,
-      name: 'Mary Poppendieck',
-      number: '39-23-6423122'
-    }
-  ])
-
+  const [persons, setPersons] = useState([])
+  
   const [formData, setFormData] = useState({
     newName: '',
     newNumber: '',
   })
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      // suoritetaan vasta, kun pyyntö on valmis.
+      .then(response => {
+        console.log('use effectissä');
+        
+        setPersons(response.data)
+      }
+      )  
+  }, [])
 
   // phonebookform-lomakkeen tilapäivitys kun kirjoitetaan
   const handlePhonebookFormInputChange = (event) => {
