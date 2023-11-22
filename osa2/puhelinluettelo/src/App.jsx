@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PhonebookForm from './components/PhonebookForm'
 import Contacts from './components/Contacts'
+import contactService from './services/contacts'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,13 +13,9 @@ const App = () => {
   })
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      // suoritetaan vasta, kun pyyntö on valmis.
-      .then(response => {
-        console.log('use effectissä');
-        
-        setPersons(response.data)
+    contactService.getAll()
+      .then(initialContacts => {
+        setPersons(initialContacts)
       }
       )  
   }, [])
@@ -36,25 +32,39 @@ const App = () => {
     // ts. älä lataa sivua uudelleen
     event.preventDefault()
 
-    // tarkistetaan onko nimi listassa
-    const exists = persons.some(
+    // tarkistetaan onko nimi listassa,
+    // jos ei, niin N
+    const foundPerson = persons.find(
       (person) => person.name.toLowerCase() === formData.newName.toLowerCase()
     )
-
-    if (exists) {
-      alert(`${formData.newName} is already added to the phonebook`)
-      return
+    
+    if (foundPerson) {
+      const ans = window.confirm(`${formData.newName} is already added to the phonebook, replace the old number with a new one?`)
+      if (ans) {
+        contactService
+        // syötetään uusi arvo patchillä
+        .patch(foundPerson.id, {number: formData.newNumber})
+        // vastauksessa muutettu resurssi
+        .then(returnedPerson => {
+          // kun löydetään muutetun henkilön id, asetetaan uudet arvot
+          setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedPerson))
+        })
+        return
+      }
     }
 
     const newPerson = {
-      id: persons.length + 1,
       name: formData.newName,
       number: formData.newNumber,
     }
-     // lisää uusi yhteystieto tietorakenteeseen
-    setPersons((prevPersons) => [...prevPersons, newPerson])
-    // aseta tyhjät alkuarvot kenttiin
-    setFormData({ newName: '', newNumber: '' })
+
+    contactService
+      .create(newPerson)
+      .then(returnedPerson => {
+        console.log(returnedPerson);
+        setPersons((prevPersons) => [...prevPersons, returnedPerson])
+        setFormData({ newName: '', newNumber: '' })
+      })
   }
 
   // joka kerta kun renderöidään, sijoitetaan filtterin mukaiset henkilöt muuttujaan.
@@ -64,6 +74,14 @@ const App = () => {
     person.number.includes(filter)
     
   )
+
+  const removeContact = (id) => {
+    /* contactService
+    .remove(id) */
+    console.log('clicked on:');
+    console.log(id);
+    
+  }
 
   return (
     <div>
