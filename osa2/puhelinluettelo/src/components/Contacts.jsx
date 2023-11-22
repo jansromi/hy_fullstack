@@ -3,7 +3,7 @@ const Contacts = ({ persons, removeContact }) => {
     return (
         <div>
             {persons.map((person) => (
-            <Person key={person.id} name={person.name} number={person.number}/>
+            <Person key={person.id} name={person.name} number={person.number} removeContact={() => removeContact(person)}/>
             ))}
         </div>
     )

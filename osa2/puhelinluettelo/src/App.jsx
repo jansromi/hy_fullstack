@@ -75,12 +75,22 @@ const App = () => {
     
   )
 
-  const removeContact = (id) => {
-    /* contactService
-    .remove(id) */
-    console.log('clicked on:');
-    console.log(id);
-    
+  // funktio kontaktion poistoon
+  const removeContact = (personToRemove) => {
+    const ans = window.confirm(`Delete ${personToRemove.name}?`)
+    if (ans) {
+      contactService
+      .remove(personToRemove.id)
+      .then(() => {
+        // filtteröidään muuttujaan ne henkilöt, joiden id on eri kuin poistettavan henkilön
+        const updatedPersons = persons.filter(person => person.id !== personToRemove.id)
+        setPersons(updatedPersons)
+      }
+      )
+    }
+    else {
+      return
+    }
   }
 
   return (
@@ -94,7 +104,7 @@ const App = () => {
         addContact={addContact}
       />
       <h2>Numbers</h2>
-      <Contacts persons={filtered}/>
+      <Contacts persons={filtered} removeContact={removeContact}/>
     </div>
   )
 }
