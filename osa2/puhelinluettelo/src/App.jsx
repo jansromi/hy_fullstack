@@ -1,17 +1,27 @@
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PhonebookForm from './components/PhonebookForm'
+import Notification from './components/Notification'
 import Contacts from './components/Contacts'
 import contactService from './services/contacts'
 
+
 const App = () => {
   const [persons, setPersons] = useState([])
-  
   const [formData, setFormData] = useState({
     newName: '',
     newNumber: '',
   })
-
+  const [msg, setNotifMsg] = useState(null);
+  
+  // Aseta notifikaatioviesti joka katoaa 5 sekunnin kuluttua
+  const setNotificationMessage = (message) => {
+    setNotifMsg(message);
+    setTimeout(() => {
+      setNotifMsg(null);
+    }, 5000);
+  }
+  
   useEffect(() => {
     contactService.getAll()
       .then(initialContacts => {
@@ -47,7 +57,8 @@ const App = () => {
         // vastauksessa muutettu resurssi
         .then(returnedPerson => {
           // kun löydetään muutetun henkilön id, asetetaan uudet arvot
-          setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedPerson))
+          setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedPerson));
+          setNotificationMessage(`Number of ${foundPerson.name} was changed`)
         })
         return
       }
@@ -64,6 +75,7 @@ const App = () => {
         console.log(returnedPerson);
         setPersons((prevPersons) => [...prevPersons, returnedPerson])
         setFormData({ newName: '', newNumber: '' })
+        setNotificationMessage(`Added ${returnedPerson.name}`);
       })
   }
 
@@ -85,6 +97,7 @@ const App = () => {
         // filtteröidään muuttujaan ne henkilöt, joiden id on eri kuin poistettavan henkilön
         const updatedPersons = persons.filter(person => person.id !== personToRemove.id)
         setPersons(updatedPersons)
+        setNotificationMessage(`Contact '${personToRemove.name}' removed`)
       }
       )
     }
@@ -95,6 +108,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={msg}/>
       <Filter filter={filter} setFilter={setFilter}/>
       <h2>Phonebook</h2>
       <PhonebookForm
