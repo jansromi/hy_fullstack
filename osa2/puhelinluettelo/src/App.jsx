@@ -13,9 +13,10 @@ const App = () => {
     newNumber: '',
   })
   const [msg, setNotifMsg] = useState(null);
-  
+  const [isAlert, setAlert] = useState(false);
   // Aseta notifikaatioviesti joka katoaa 5 sekunnin kuluttua
-  const setNotificationMessage = (message) => {
+  const setNotificationMessage = (message, alert=false) => {
+    setAlert(alert);
     setNotifMsg(message);
     setTimeout(() => {
       setNotifMsg(null);
@@ -60,6 +61,9 @@ const App = () => {
           setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedPerson));
           setNotificationMessage(`Number of ${foundPerson.name} was changed`)
         })
+        .catch(() => {
+          setNotificationMessage(`${formData.newName} was already removed from the server`, true );
+        })
         return
       }
     }
@@ -98,8 +102,7 @@ const App = () => {
         const updatedPersons = persons.filter(person => person.id !== personToRemove.id)
         setPersons(updatedPersons)
         setNotificationMessage(`Contact '${personToRemove.name}' removed`)
-      }
-      )
+      })  
     }
     else {
       return
@@ -108,7 +111,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={msg}/>
+      <Notification message={msg} alert={isAlert}/>
       <Filter filter={filter} setFilter={setFilter}/>
       <h2>Phonebook</h2>
       <PhonebookForm
