@@ -1,8 +1,9 @@
 const SmallCountry = (props) => {
+    
     return (
         <div>
             <ul>
-                <li>{props.CommonName}</li>
+            <li>{props.CommonName} <button onClick={() => props.showCountry(props.CommonName)}>Show</button></li>
             </ul>
         </div>
     )
