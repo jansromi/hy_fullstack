@@ -16,6 +16,7 @@ const getLargeCountry = async (countryName) => {
         Capital: data.capital,
         Area: data.area,
         languages: data.languages,
+        LatLng: data.capitalInfo.latlng,
         FlagUrl: data.flags.png,
         FlagAlt: data.flags.alt
     };

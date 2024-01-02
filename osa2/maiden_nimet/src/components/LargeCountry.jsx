@@ -1,3 +1,5 @@
+import Weatherbox from "./Weatherbox";
+
 const LargeCountry = ({ data }) => {
     if (data == null) return;
     return (
@@ -12,6 +14,7 @@ const LargeCountry = ({ data }) => {
                 ))}
             </ul>
             <img src={data.FlagUrl} alt={data.FlagAlt} />
+            <Weatherbox capitalName={data.Capital} capitalLatitude={data.LatLng[0]} capitalLongitude={data.LatLng[1]}/>
         </div>
     )
 }
