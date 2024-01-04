@@ -1,5 +1,5 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 /**
  * Hakee kaikki kontaktit palvelimelta
@@ -17,7 +17,7 @@ const get = (id) => {
 const create = newContact => {
     const request = axios.post(baseUrl, newContact)
     return request.then(r => r.data)
-}
+} 
 
 const update = (id, newContact) => {
     const request = axios.put(`${baseUrl}/${id}`, newContact)
