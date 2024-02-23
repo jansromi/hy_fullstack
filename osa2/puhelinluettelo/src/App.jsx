@@ -62,7 +62,7 @@ const App = () => {
           setNotificationMessage(`Number of ${foundPerson.name} was changed`)
         })
         .catch((error) => {
-          setNotificationMessage(`${formData.newName} was already removed from the server`, true );
+          setNotificationMessage(error.response.data.error, true);
         })
         return
       }
