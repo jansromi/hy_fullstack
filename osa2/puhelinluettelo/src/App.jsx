@@ -54,14 +54,14 @@ const App = () => {
       if (ans) {
         contactService
         // syötetään uusi arvo patchillä
-        .patch(foundPerson.id, {number: formData.newNumber})
+        .update(foundPerson.id, {name: formData.newName, number: formData.newNumber})
         // vastauksessa muutettu resurssi
         .then(returnedPerson => {
           // kun löydetään muutetun henkilön id, asetetaan uudet arvot
           setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedPerson));
           setNotificationMessage(`Number of ${foundPerson.name} was changed`)
         })
-        .catch(() => {
+        .catch((error) => {
           setNotificationMessage(`${formData.newName} was already removed from the server`, true );
         })
         return
@@ -80,6 +80,9 @@ const App = () => {
         setPersons((prevPersons) => [...prevPersons, returnedPerson])
         setFormData({ newName: '', newNumber: '' })
         setNotificationMessage(`Added ${returnedPerson.name}`);
+      })
+      .catch((error) => {
+        setNotificationMessage(error.response.data.error, true);
       })
   }
 
